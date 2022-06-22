@@ -35,7 +35,7 @@ app.get('/talker', async (_req, res) => {
 
 // requisito 
 // Testar como consumir depois
-app.get('/talker/search', authorizationFunc, async (req, res) => {
+app.get('/talker/search?q=searchTerm', authorizationFunc, async (req, res) => {
   const { searchTerm } = req.query;
   const talkerFile = await fs.readFile(talkersJson, 'utf-8');
   const talkers = await JSON.parse(talkerFile);
