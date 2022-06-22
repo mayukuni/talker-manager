@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs').promises;
-const token = require('./middlewares/token');
+const randomizeToken = require('./middlewares/token');
 const authorizationFunc = require('./middlewares/authorization');
 const nameValidation = require('./middlewares/nameValidation');
 const ageValidation = require('./middlewares/ageValidation');
@@ -70,8 +70,8 @@ app.get('/talker/:id', async (req, res) => {
 // https://codeshack.io/basic-login-system-nodejs-express-mysql/
 // https://www.simplilearn.com/tutorials/javascript-tutorial/email-validation-in-javascript
 // https://stackoverflow.com/questions/6603015/check-whether-a-string-matches-a-regex-in-js
-const test = token();
 app.post('/login', async (req, res) => {
+  const token = randomizeToken();
   const { email, password } = req.body;
   const regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   const validEmail = regexEmail.test(email);
@@ -87,10 +87,8 @@ app.post('/login', async (req, res) => {
   if (password.length < 6) {
     return res.status(400).json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
   }
-  return res.status(200).json({ token: test });
+  return res.status(200).json({ token });
 });
-
-module.exports = test;
 
 // requisito 4 e 5
 app.post('/talker',
