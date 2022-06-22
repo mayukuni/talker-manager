@@ -97,3 +97,22 @@ app.post('/talker',
     await fs.writeFile(talkersJson, JSON.stringify(talkers));
     return res.status(201).json(newTalkers);
 });
+
+// requisito 6
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/delete
+app.delete('/talker/:id', authorizationFunc, async (req, res) => {
+  const { id } = req.params;
+  const talkerFile = await fs.readFile(talkersJson, 'utf-8');
+  const talkers = await JSON.parse(talkerFile);
+  const talkerById = talkers.find((t) => `${t.id}` === id);
+
+  if (talkerById === -1) {
+    return res.status(204).end();
+  }
+  // delete talkerFile[talkerById];
+  // Por que não usar o delete?
+  talkers.splice(talkerById, 1);
+
+  await fs.writeFile(talkersJson, JSON.stringify(talkerFile));
+  res.status(204).end();
+});
