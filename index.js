@@ -2,6 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs').promises;
 const token = require('./middlewares/token');
+const authorizationFunc = require('./middlewares/authorization');
+const nameValidation = require('./middlewares/nameValidation');
+const ageValidation = require('./middlewares/ageValidation');
+const talkValidation = require('./middlewares/talkValidation');
+const rateValidation = require('./middlewares/rateValidation');
+const whatchedAtValidation = require('./middlewares/whatchedAtValidation');
 
 const talkersJson = './talker.json';
 
@@ -64,4 +70,30 @@ app.post('/login', async (req, res) => {
   }
 
   return res.status(200).json({ token });
+});
+
+// requisito 4
+app.post('/talker',
+  authorizationFunc,
+  nameValidation,
+  ageValidation,
+  talkValidation,
+  rateValidation,
+  whatchedAtValidation,
+  async (req, res) => {
+  const { age, name, talk } = await req.body;
+
+  const talkerFile = await fs.readFile(talkersJson, 'utf-8');
+  const talkers = await JSON.parse(talkerFile);
+  const newId = talkers[talkers.length - 1].id + 1;
+    const newTalkers = {
+      // id: talkers.length + 1,
+      id: newId,
+      name,
+      age,
+      talk,
+    };
+    talkers.push(newTalkers);
+    await fs.writeFile(talkersJson, JSON.stringify(talkers));
+    return res.status(201).json(newTalkers);
 });
