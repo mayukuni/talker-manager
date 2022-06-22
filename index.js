@@ -33,6 +33,25 @@ app.get('/talker', async (_req, res) => {
   res.status(200).json(talkers);
 });
 
+// requisito 7
+// Testar como consumir depois
+app.get('/talker/search', authorizationFunc, async (req, res) => {
+  const { searchTerm } = req.query;
+  const talkerFile = await fs.readFile(talkersJson, 'utf-8');
+  const talkers = await JSON.parse(talkerFile);
+  if (!searchTerm || searchTerm === '') {
+    return res.status(200).json(talkers);
+  }
+
+  const filteredTerms = talkers.filter((t) => t.name.includes(searchTerm));
+
+  if (!filteredTerms) {
+    return res.status(200).json([]);
+  }
+
+  return res.status(200).json(filteredTerms);
+});
+
 // requisito 2
 // https://webdevidea.com/blog/difference-between-find-and-findindex-in-javascript/#:~:text=The%20only%20difference%20is%20that,method%20returns%20the%20element%20index.
 app.get('/talker/:id', async (req, res) => {
