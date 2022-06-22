@@ -70,8 +70,8 @@ app.get('/talker/:id', async (req, res) => {
 // https://codeshack.io/basic-login-system-nodejs-express-mysql/
 // https://www.simplilearn.com/tutorials/javascript-tutorial/email-validation-in-javascript
 // https://stackoverflow.com/questions/6603015/check-whether-a-string-matches-a-regex-in-js
+const test = token();
 app.post('/login', async (req, res) => {
-  const test = token();
   const { email, password } = req.body;
   const regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   const validEmail = regexEmail.test(email);
