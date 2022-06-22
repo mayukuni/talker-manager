@@ -33,23 +33,22 @@ app.get('/talker', async (_req, res) => {
   res.status(200).json(talkers);
 });
 
-// requisito 
+// requisito 8
 // Testar como consumir depois
-app.get('/talker/search?q=searchTerm', authorizationFunc, async (req, res) => {
-  const { searchTerm } = req.query;
+app.get('/talker/search', authorizationFunc, async (req, res) => {
+  const { q } = req.query;
   const talkerFile = await fs.readFile(talkersJson, 'utf-8');
   const talkers = await JSON.parse(talkerFile);
-  if (!searchTerm || searchTerm === '') {
+  if (!q || q.length === 0) {
     return res.status(200).json(talkers);
   }
+  const filteredTerms = talkers.filter((t) => t.name.includes(q));
+    if (!filteredTerms) {
+      return res.status(200).json([]);
+    }
+  res.status(200).json(filteredTerms);
 
-  const filteredTerms = talkers.filter((t) => t.name.includes(searchTerm));
-
-  if (!filteredTerms) {
-    return res.status(200).json([]);
-  }
-
-  return res.status(200).json(filteredTerms);
+  // Porque não funciona usando outro nome do const { q }?
 });
 
 // requisito 2
