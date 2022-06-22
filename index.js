@@ -71,6 +71,7 @@ app.get('/talker/:id', async (req, res) => {
 // https://www.simplilearn.com/tutorials/javascript-tutorial/email-validation-in-javascript
 // https://stackoverflow.com/questions/6603015/check-whether-a-string-matches-a-regex-in-js
 app.post('/login', async (req, res) => {
+  const test = token();
   const { email, password } = req.body;
   const regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   const validEmail = regexEmail.test(email);
@@ -80,15 +81,13 @@ app.post('/login', async (req, res) => {
   if (!validEmail) {
     return res.status(400).json({ message: 'O "email" deve ter o formato "email@email.com"' });
   }
-
   if (!password) {
     return res.status(400).json({ message: 'O campo "password" é obrigatório' });
   }
   if (password.length < 6) {
     return res.status(400).json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
   }
-
-  return res.status(200).json({ token });
+  return res.status(200).json({ test });
 });
 
 // requisito 4 e 5
