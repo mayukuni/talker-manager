@@ -33,7 +33,7 @@ app.get('/talker', async (_req, res) => {
   res.status(200).json(talkers);
 });
 
-// requisito 7
+// requisito 
 // Testar como consumir depois
 app.get('/talker/search', authorizationFunc, async (req, res) => {
   const { searchTerm } = req.query;
@@ -91,7 +91,7 @@ app.post('/login', async (req, res) => {
   return res.status(200).json({ token });
 });
 
-// requisito 4
+// requisito 4 e 5
 app.post('/talker',
   authorizationFunc,
   nameValidation,
@@ -117,7 +117,7 @@ app.post('/talker',
     return res.status(201).json(newTalkers);
 });
 
-// requisito 6
+// requisito 7
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/delete
 app.delete('/talker/:id', authorizationFunc, async (req, res) => {
   const { id } = req.params;
