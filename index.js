@@ -90,6 +90,8 @@ app.post('/login', async (req, res) => {
   return res.status(200).json({ token: test });
 });
 
+module.exports = test;
+
 // requisito 4 e 5
 app.post('/talker',
   authorizationFunc,

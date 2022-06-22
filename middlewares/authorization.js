@@ -1,7 +1,6 @@
-const token = require('./token');
+const test = require('../index');
 
 const authorizationFunc = (req, res, next) => {
-  const test = token();
   const { authorization } = req.headers;
 
   if (!authorization) {
